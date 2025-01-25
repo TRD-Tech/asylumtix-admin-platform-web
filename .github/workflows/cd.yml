@@ -8,11 +8,6 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
-# Add "id-token" with the intended permissions.
-permissions:
-  contents: "read"
-  id-token: "write"
-
 jobs:
   build_and_push:
     runs-on: ubuntu-latest
@@ -64,6 +59,11 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy_to_gcp:    
+    # Add "id-token" with the intended permissions.
+    permissions:
+      contents: "read"
+      id-token: "write"
+
     steps:
       - id: "auth"
         uses: "google-github-actions/auth@v2"
