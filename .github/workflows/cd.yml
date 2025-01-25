@@ -59,7 +59,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
     outputs:
-      tags: ${{ steps.meta.outputs.tags }}
+      image_url: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.version }}
 
   deploy_to_gcp:
     runs-on: ubuntu-latest
@@ -85,7 +85,7 @@ jobs:
         uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: "asylumtix-admin-platform-web"
-          image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          image: ${{ needs.build_and_push.outputs.image_url }}
           env_vars: ${{ secrets.IMAGE_ENV_VARS }}
 
       - name: "Service URL"
