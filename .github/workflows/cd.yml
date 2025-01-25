@@ -43,11 +43,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=sha
+            type=raw,value=latest
 
       - id: build_and_push
         name: Build and push Docker image
@@ -59,7 +55,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
     outputs:
-      image_url: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.version }}
+      image_url: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
   deploy_to_gcp:
     runs-on: ubuntu-latest
