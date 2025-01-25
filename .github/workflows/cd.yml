@@ -9,7 +9,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build-and-push:
+  build_and_push:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -49,10 +49,40 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=sha
 
-      - name: Build and push Docker image
+      - id: build_and_push
+        name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  deploy_to_gcp:
+    name: Deploy to Google Cloud Platform
+
+    # Add "id-token" with the intended permissions.
+    permissions:
+      contents: "read"
+      id-token: "write"
+
+    steps:
+      - id: "auth"
+        uses: "google-github-actions/auth@v2"
+        with:
+          credentials_json: "${{ GCP_KEY }}"
+
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v2"
+        with:
+          version: ">= 363.0.0"
+
+      - id: deploy
+      uses: google-cloud-actions/deploy-cloudrun@v2
+      with:
+        service: "asylumtix-admin-platform-web"
+        image: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ jobs.build_and_push.meta.tags }}
+        env_vars: ${{ secrets.IMAGE_ENV_VARS }}
+
+      - name: "Output URL"
+        run: echo "${{ steps.deploy.outputs.url }}"
