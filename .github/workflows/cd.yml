@@ -85,7 +85,7 @@ jobs:
         uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: "asylumtix-admin-platform-web"
-          image: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ needs.build_and_push.outputs.tags }}
+          image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           env_vars: ${{ secrets.IMAGE_ENV_VARS }}
 
       - name: "Service URL"
