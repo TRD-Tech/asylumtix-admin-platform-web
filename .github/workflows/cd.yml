@@ -1,11 +1,10 @@
-name: Containerize and deploy to GCP
+name: CD
 
 on:
   push:
     branches: ["main"]
 
 env:
-  GCP_REGION: us-central1
   GCP_CONTAINER_REPO: "asylumtix-admin-platform"
 
   IMAGE_NAME: "asylumtix-admin-platform-web"
@@ -28,17 +27,20 @@ jobs:
         with:
           version: ">= 363.0.0"
 
+      - name: "Configure Docker"
+        run: "gcloud configure-docker ${{ vars.GCP_REGION }}-docker.pkg.dev"
+
       - name: Build Docker image
-        run: docker build . -t ${{ env.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/${{env.GCP_CONTAINER_REPO}}/${{ env.IMAGE_NAME }}
+        run: docker build . -t ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT }}/${{ env.GCP_CONTAINER_REPO }}/${{ env.IMAGE_NAME }}
 
       - name: Push image to Google Container Registry
-        run: docker push ${{ env.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/${{env.GCP_CONTAINER_REPO}}/${{ env.IMAGE_NAME }}
+        run: docker push ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT }}/${{env.GCP_CONTAINER_REPO}}/${{ env.IMAGE_NAME }}
 
       - id: deploy
         uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: "asylumtix-admin-platform-web"
-          image: ${{ env.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/${{env.GCP_CONTAINER_REPO}}/${{ env.IMAGE_NAME }}
+          image: ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT }}/${{env.GCP_CONTAINER_REPO}}/${{ env.IMAGE_NAME }}
           env_vars: ${{ secrets.IMAGE_ENV_VARS }}
 
       - name: "Service URL"
