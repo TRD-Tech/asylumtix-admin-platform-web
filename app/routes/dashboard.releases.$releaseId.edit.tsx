@@ -8,7 +8,6 @@ import {
   Form as RemixForm,
   useActionData,
   useLoaderData,
-  useNavigation,
   useRouteError,
 } from "@remix-run/react";
 import { Form, FormDescription, FormMessage } from "~/components/ui/form";
@@ -21,8 +20,6 @@ import {
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { releaseDatasource } from "~/lib/releases/data";
-import { ReleaseStatus } from "~/lib/releases/data/types/ReleaseStatus";
-import { ReleaseUniqueIdentifierError } from "~/lib/releases/data/release.datasource";
 import { useToast } from "~/hooks/use-toast";
 import { useEffect } from "react";
 import { Release } from "~/lib/releases/data/types/Release";
@@ -79,7 +76,9 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 export const action: ActionFunction = async ({ request, params }) => {
   const releaseId = params.releaseId!;
-  if (request.method === "PUT") {
+
+  // Using POST since is looks like PUT doesn't work
+  if (request.method === "POST") {
     const data = await getValidatedFormData<FormValue>(
       request,
       zodResolver(schema)
@@ -168,7 +167,7 @@ export default function EditRelease() {
         description: "Your changes have been saved successfully.",
       });
     }
-  }, [actionData]);
+  }, [actionData, toast]);
 
   return (
     <>
@@ -176,7 +175,7 @@ export default function EditRelease() {
 
       <AlertDialog>
         <Form {...form}>
-          <RemixForm onSubmit={handleSubmit} method="PUT">
+          <RemixForm onSubmit={handleSubmit} method="POST">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
               <FormField
                 disabled

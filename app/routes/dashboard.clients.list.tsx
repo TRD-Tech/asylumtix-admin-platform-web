@@ -116,13 +116,14 @@ export default function ClientList() {
               <TableHead>Identifier</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Assigned Release</TableHead>
-              <TableHead className="text-center">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {clients.map((client) => (
               <TableRow key={client.id}>
-                <TableCell>{client.id}</TableCell>
+                <TableCell>
+                  <Button variant={"link"}>{client.id}</Button>
+                </TableCell>
                 <TableCell>{client.name}</TableCell>
                 <TableCell>
                   <Select
@@ -136,22 +137,11 @@ export default function ClientList() {
                     <SelectContent>
                       {releases.map((release) => (
                         <SelectItem key={release.id} value={release.id}>
-                          {release.name} – {release.id}
+                          {release.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
-                </TableCell>
-
-                <TableCell>
-                  <div className="flex items-center gap-x-4 w-full justify-center">
-                    <Button type="button" variant={"outline"} size={"icon"}>
-                      <Pen />
-                    </Button>
-                    <Button type="button" variant={"destructive"} size={"icon"}>
-                      <Trash />
-                    </Button>
-                  </div>
                 </TableCell>
               </TableRow>
             ))}
