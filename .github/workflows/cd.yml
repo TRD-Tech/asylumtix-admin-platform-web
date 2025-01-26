@@ -28,7 +28,7 @@ jobs:
           version: ">= 363.0.0"
 
       - name: "Configure Docker"
-        run: "gcloud configure-docker ${{ vars.GCP_REGION }}-docker.pkg.dev"
+        run: "gcloud auth configure-docker ${{ vars.GCP_REGION }}-docker.pkg.dev"
 
       - name: Build Docker image
         run: docker build . -t ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT }}/${{ env.GCP_CONTAINER_REPO }}/${{ env.IMAGE_NAME }}
