@@ -55,6 +55,15 @@ export class FirebaseClientDatasource implements ClientDataSource {
     return client;
   }
 
+  async getById(id: string): Promise<Client | null> {
+    const docRef = this.clientCollection.doc(id);
+
+    const doc = await docRef.get();
+    if (!doc.exists) return null;
+
+    return doc.data()!;
+  }
+
   async getByCompanyId(companyId: string): Promise<Client | null> {
     const res = await this.clientCollection
       .where("companyId", "==", companyId)
@@ -83,5 +92,14 @@ export class FirebaseClientDatasource implements ClientDataSource {
 
     const newDoc = await docRef.get();
     return newDoc.data()!;
+  }
+
+  async deleteById(id: string): Promise<void> {
+    const docRef = this.clientCollection.doc(id);
+    const doc = await docRef.get();
+
+    if (!doc.exists) throw new ClientNotFoundError();
+
+    await docRef.delete();
   }
 }

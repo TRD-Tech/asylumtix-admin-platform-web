@@ -122,7 +122,11 @@ export default function ClientList() {
             {clients.map((client) => (
               <TableRow key={client.id}>
                 <TableCell>
-                  <Button variant={"link"}>{client.id}</Button>
+                  <Link to={`/dashboard/clients/${client.id}/edit`}>
+                    <Button className="underline" variant={"link"}>
+                      {client.id}
+                    </Button>
+                  </Link>
                 </TableCell>
                 <TableCell>{client.name}</TableCell>
                 <TableCell>
