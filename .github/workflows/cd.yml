@@ -37,7 +37,7 @@ jobs:
       - id: deploy
         uses: google-github-actions/deploy-cloudrun@v2
         with:
-          service: "asylumtix-admin-platform-web"
+          service: ${{ vars.GCP_CLOUD_RUN_SERVICE }}
           image: ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT }}/${{vars.GCP_CONTAINER_REPO}}/${{ env.IMAGE_NAME }}
           env_vars: ${{ secrets.IMAGE_ENV_VARS }}
 
