@@ -42,4 +42,4 @@ jobs:
           env_vars: ${{ secrets.IMAGE_ENV_VARS }}
 
       - name: "Service URL"
-        run: echo "${{ steps.deploy.outputs.url }}"
+        run: echo release_url=${{ steps.deploy.outputs.url }} >> $GITHUB_OUTPUT
