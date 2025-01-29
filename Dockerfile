@@ -8,9 +8,9 @@ RUN npm install
 
 RUN npm run build
 
-ENV PORT=3000
+ENV PORT=8080
 ENV NODE_ENV=production
 
-EXPOSE 3000
+EXPOSE 8080
 
 CMD [ "npm", "start" ]
