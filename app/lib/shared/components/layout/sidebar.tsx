@@ -49,14 +49,6 @@ export function AppSidebar() {
                   <ListOrdered /> List
                 </SidebarMenuButton>
               </Link>
-
-              <Link to="/dashboard/releases/distribution">
-                <SidebarMenuButton
-                  isActive={pathname === "/dashboard/releases/distribution"}
-                >
-                  <Replace /> Distribution
-                </SidebarMenuButton>
-              </Link>
             </SidebarGroupContent>
           </SidebarGroup>
 
@@ -69,14 +61,6 @@ export function AppSidebar() {
                   isActive={pathname === "/dashboard/clients/list"}
                 >
                   <Users /> List
-                </SidebarMenuButton>
-              </Link>
-
-              <Link to="/dashboard/clients/venues">
-                <SidebarMenuButton
-                  isActive={pathname === "/dashboard/clients/venues"}
-                >
-                  <Map /> Venues
                 </SidebarMenuButton>
               </Link>
             </SidebarGroupContent>
