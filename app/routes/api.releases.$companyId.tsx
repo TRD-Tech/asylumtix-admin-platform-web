@@ -16,6 +16,8 @@ export const loader: LoaderFunction = async ({ params }) => {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "GET",
     "Content-Type": "application/json",
+
+    "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, sentry-trace"
   };
 
   const companyId = params["companyId"];
